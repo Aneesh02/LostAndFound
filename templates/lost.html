@@ -1,3 +1,5 @@
+{% extends 'main.html' %}
+{% block content %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,5 +10,18 @@
 </head>
 <body>
     Lost
+    <div class="container">
+        {% for item in items %}
+        <div class="card" style="width: 18rem;">
+            <img src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fpolaris.iitbhilai.ac.in%2Fmentors.php&psig=AOvVaw2ZhoOqrlq0MiuS82x7v9PK&ust=1649364098720000&source=images&cd=vfe&ved=0CAoQjRxqFwoTCKD-15umgPcCFQAAAAAdAAAAABAD" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">{{ item.item_name }}</h5>
+              <p class="card-text">{{item.description}}</p>
+              <a href="/lost" class="btn btn-primary">Go somewhere</a>
+            </div>
+          </div>
+        {% endfor %}
+    </div>
 </body>
 </html>
+{% endblock %}
