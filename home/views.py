@@ -5,7 +5,7 @@ from .models import LostItem, FoundItem
 def index(request):
     return render(request, 'index.html')
 
-def lost(request, *args, **kwargs):
+def lost(request):
     items = LostItem.objects.all()
     ctx = {'items': items}
     return render(request, 'lost.html', ctx)
