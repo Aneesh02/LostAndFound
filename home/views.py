@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
 from .models import LostItem, FoundItem
 from .forms import LostForm, FoundForm
 
 
 def index(request):
+    user = request.user
     return render(request, 'index.html')
 
 def lost(request):
@@ -34,6 +36,7 @@ def add_lost(request):
     ctx = {'form' : form}
     return render(request, 'add_lost.html', ctx)
 
+@login_required
 def add_found(request):
     form = FoundForm()
     if request.method == 'POST':
@@ -43,3 +46,13 @@ def add_found(request):
             return redirect('found')
     ctx = {'form' : form}
     return render(request, 'add_found.html', ctx)
+
+def user_lost(request):
+    items = LostItem.objects.all()
+    ctx = {'items': items}
+    return render(request, 'user_lost.html', ctx)
+
+def user_found(request):
+    items = FoundItem.objects.all()
+    ctx = {'items': items}
+    return render(request, 'user_found.html', ctx)
