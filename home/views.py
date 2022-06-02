@@ -36,7 +36,6 @@ def add_lost(request):
     ctx = {'form' : form}
     return render(request, 'add_lost.html', ctx)
 
-@login_required
 def add_found(request):
     form = FoundForm()
     if request.method == 'POST':
@@ -56,3 +55,39 @@ def user_found(request):
     items = FoundItem.objects.all()
     ctx = {'items': items}
     return render(request, 'user_found.html', ctx)
+
+def edit_lost(request, item_id):
+    items = LostItem.objects.get(pk=item_id)
+    form = LostForm(request.POST or None, instance=items)
+    ctx = {'items': items, 'form': form}
+    if form.is_valid():
+        form.save()
+        return redirect('user_lost')
+    return render(request, 'edit_lost.html', ctx)
+
+def edit_found(request, item_id):
+    items = FoundItem.objects.get(pk=item_id)
+    form = FoundForm(request.POST or None, instance=items)
+    ctx = {'items': items, 'form': form}
+    if form.is_valid():
+        form.save()
+        return redirect('user_found')
+    return render(request, 'edit_found.html', ctx)
+
+def delete_lost(request, item_id):
+    items = LostItem.objects.get(pk=item_id)
+    items.delete()
+    return redirect('user_lost')
+
+def delete_found(request, item_id):
+    items = FoundItem.objects.get(pk=item_id)
+    items.delete()
+    return redirect('user_found')
+
+def search(request):
+    if request.method == "POST":
+        searched = request.POST['searched']
+        lo = LostItem.objects.filter(item_name__contains=searched)
+        fo = FoundItem.objects.filter(item_name__contains=searched)
+        ctx = {'searched' : searched, 'lo' : lo, 'fo': fo}
+        return render(request, 'search.html', ctx)
